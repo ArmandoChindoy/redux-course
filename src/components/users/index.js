@@ -2,61 +2,29 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as usersActions from '../../actions/usersActions'
 import LoaderComponent from '../LoaderComponent'
+import TableComponent from './TableComponent'
 
 class Users extends Component {
   componentDidMount () {
-    this.props.GET_ALL()
+    !this.props.users || this.props.users.length < 1 && this.props.getAll()
   }
 
-    getRows = () => this.props.users.map((usuario) => (
-      <tr key={usuario.id}>
-        <td>
-          {usuario.name}
-        </td>
-        <td>
-          {usuario.email}
-        </td>
-        <td>
-          {usuario.website}
-        </td>
-      </tr>
-    ));
-
     createTable =() => (
-      <table className='tabla'>
-            <thead>
-              <tr>
-                <th>
-                  Nombre
-                </th>
-                <th>
-                  Correo
-                </th>
-                <th>
-                  Enlace
-                </th>
-              </tr>
-            </thead>
-            {this.props.error
-              ? <h1>Error:{this.props.error}</h1>
-              : <tbody>
-              {this.getRows()}
-            </tbody>
-            }
-          </table>
+      <TableComponent error={this.props.error} data= {this.props.users}/>
     )
 
     render () {
+      console.log('props', this.props)
       return (
         <div>
-          {this.props.loading ? <LoaderComponent/> : this.createTable()}
+          {this.props.loading || this.props.users.length < 1 ? <LoaderComponent/> : this.createTable()}
         </div>
       )
     }
 };
 
 const mapStateToProps = (reducers) => {
-  return reducers.userReducer
+  return reducers.usersReducer
 }
 
 export default connect(mapStateToProps, usersActions)(Users)

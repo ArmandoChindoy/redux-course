@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { GET_ALL_USERS, ERROR, LOADING } from '../types/usuariosTypes'
-export const GET_ALL = () => async (dispatch) => {
+export const getAll = () => async (dispatch) => {
   dispatch({ type: LOADING })
   try {
     const { data } = await axios.get('https://jsonplaceholder.typicode.com/users')
